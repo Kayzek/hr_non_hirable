@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Departure Wizard: add non-hirable checkbox and reason -->
+    <record id="hr_departure_wizard_view_form_non_hirable" model="ir.ui.view">
+        <field name="name">hr.departure.wizard.form.non_hirable</field>
+        <field name="model">hr.departure.wizard</field>
+        <field name="inherit_id" ref="hr.hr_departure_wizard_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[last()]" position="after">
+                <separator string="Blacklist"/>
+                <group>
+                    <field name="mark_non_hirable"/>
+                    <field name="non_hirable_reason_id" placeholder="Select reason..." invisible="not mark_non_hirable" required="mark_non_hirable"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

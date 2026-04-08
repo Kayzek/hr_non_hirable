@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Non-Hirable Reason Form View -->
+    <record id="hr_non_hirable_reason_view_form" model="ir.ui.view">
+        <field name="name">hr.non.hirable.reason.form</field>
+        <field name="model">hr.non.hirable.reason</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Description of this non-hirable reason"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Non-Hirable Reason Tree View -->
+    <record id="hr_non_hirable_reason_view_tree" model="ir.ui.view">
+        <field name="name">hr.non.hirable.reason.tree</field>
+        <field name="model">hr.non.hirable.reason</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Non-Hirable Reason Action -->
+    <record id="hr_non_hirable_reason_action" model="ir.actions.act_window">
+        <field name="name">Non-Hirable Reasons</field>
+        <field name="res_model">hr.non.hirable.reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

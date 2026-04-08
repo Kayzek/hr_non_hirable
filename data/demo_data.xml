@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo categories -->
+        <record id="non_hirable_reason_misconduct" model="hr.non.hirable.reason">
+            <field name="name">Misconduct</field>
+            <field name="code">MISCONDUCT</field>
+            <field name="description">Behavioral issues or lack of professional ethics</field>
+            <field name="sequence">10</field>
+            <field name="color">1</field>
+        </record>
+    </data>
+</odoo>

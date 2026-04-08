@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Employee Form: Blacklist status section -->
+    <record id="hr_employee_view_form_non_hirable" model="ir.ui.view">
+        <field name="name">hr.employee.form.non_hirable</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Header button: only for archived non-hirable employees -->
+            <xpath expr="//header" position="inside">
+                <button name="action_toggle_non_hirable"
+                        string="Remove from Blacklist"
+                        type="object"
+                        class="btn-danger"
+                        invisible="not is_non_hirable or active"
+                        groups="hr.group_hr_manager"/>
+            </xpath>
+
+            <!-- Notebook page: Blacklist Info -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Blacklist Status" name="non_hirable_info" invisible="not is_non_hirable">
+                    <group>
+                        <group>
+                            <field name="is_non_hirable" invisible="True"/>
+                            <field name="non_hirable_date"/>
+                            <field name="non_hirable_user_id"/>
+                        </group>
+                        <group>
+                            <field name="non_hirable_reason_id" placeholder="Select reason"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Decoration on employee name -->
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="decoration-danger">is_non_hirable == True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Employee Tree: non-hirable flag column -->
+    <record id="hr_employee_view_tree_non_hirable" model="ir.ui.view">
+        <field name="name">hr.employee.tree.non_hirable</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">is_non_hirable</attribute>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <field name="is_non_hirable" column_invisible="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Employee Kanban: badge when flagged -->
+    <record id="hr_employee_view_kanban_non_hirable" model="ir.ui.view">
+        <field name="name">hr.employee.kanban.non_hirable</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='activity_ids']" position="before">
+                <field name="is_non_hirable"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
+                <div class="text-danger fw-bold" invisible="not is_non_hirable">
+                    Non-Hirable
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
