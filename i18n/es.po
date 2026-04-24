@@ -122,12 +122,12 @@ msgid "Non-Hirable Employees"
 msgstr "Empleados No Contratables"
 
 #. module: hr_non_hirable
-#: model:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_menu_view_form
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_menu_view_form
 msgid "No non-hirable employees."
 msgstr "No hay empleados no contratables."
 
 #. module: hr_non_hirable
-#: model:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_menu_view_form
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_menu_view_form
 msgid ""
 "Employees flagged as non-hirable will appear here.\n"
 "                You can flag an employee during the departure process\n"
@@ -171,3 +171,123 @@ msgstr "Empleado No Contratable"
 #: model_terms:ir.ui.view,arch_db:hr_non_hirable.hr_employee_view_form_non_hirable
 msgid "Remove from Blacklist"
 msgstr "Quitar de Lista Negra"
+
+#. module: hr_non_hirable
+#: model:ir.actions.report,name:hr_non_hirable.action_report_non_hirable_html
+msgid "Non-Hirable Employees Report"
+msgstr "Resúmen de Empleados No Contratables"
+
+#. module: hr_non_hirable
+#: model:ir.actions.report,name:hr_non_hirable.action_report_non_hirable_pdf
+msgid "Non-Hirable Employees PDF"
+msgstr "Reporte de Empleados No Contratables (PDF)"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Non-Hirable Employees Report"
+msgstr "Reporte de Empleados No Contratables"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Generated:"
+msgstr "Generado:"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Export PDF"
+msgstr "Exportar PDF"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Name"
+msgstr "Nombre"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Contract Start"
+msgstr "Inicio de Contrato"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Contract End"
+msgstr "Fin de Contrato"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Job Position"
+msgstr "Puesto de Trabajo"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Department"
+msgstr "Departamento"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Subtotal:"
+msgstr "Subtotal:"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "employee(s)"
+msgstr "empleado(s)"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Total:"
+msgstr "Total:"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "non-hirable employee(s) across"
+msgstr "empleado(s) no contratables en"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "companies"
+msgstr "empresas"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_employee_view_tree
+msgid "Ver Reporte"
+msgstr "Ver Reporte"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.hr_non_hirable_employee_view_tree
+msgid "Imprimir Reporte"
+msgstr "Imprimir Reporte"
+
+#. module: hr_non_hirable
+#: code:addons/hr_non_hirable/reports/report.py:0
+msgid "Indefinite"
+msgstr "Indefinido"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Company:"
+msgstr "Empresa:"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Identification ID"
+msgstr "Cédula"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Non-Hirable Reason"
+msgstr "Razón de No Contratación"
+
+#. module: hr_non_hirable
+#: model_terms:ir.ui.view,arch_db:hr_non_hirable.report_non_hirable_document
+msgid "Work Location"
+msgstr "Ubicación"
+
+#. module: hr_non_hirable
+#: code:addons/hr_non_hirable/reports/report.py:0
+msgid "Search in report..."
+msgstr "Buscar en reporte..."

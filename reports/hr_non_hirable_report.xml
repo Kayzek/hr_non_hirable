@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Paper format for landscape report -->
+    <record id="paperformat_report_landscape" model="report.paperformat">
+        <field name="name">Non-Hirable Report Landscape</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+    </record>
+
+    <!-- Shared content block (no wrappers) -->
+    <template id="report_non_hirable_content">
+        <h2 class="text-center">Non-Hirable Employees Report</h2>
+        <p class="text-center text-muted">
+            Company: <span t-out="company_name"/>
+        </p>
+        <p class="text-center text-muted">
+            Generated: <span t-out="datetime_now"/>
+        </p>
+
+        <t t-foreach="companies" t-as="company_data">
+            <t t-set="company" t-value="company_data['company']"/>
+            <t t-set="employees" t-value="company_data['employees']"/>
+
+            <h4 class="mt-4 mb-2 border-bottom border-dark pb-1">
+                <span t-out="company.name"/>
+                <span class="badge bg-secondary ms-2" t-out="len(employees)"/>
+            </h4>
+
+            <table class="table table-sm table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Identification ID</th>
+                        <th>Non-Hirable Reason</th>
+                        <th>Work Location</th>
+                        <th>Contract Start</th>
+                        <th>Contract End</th>
+                        <th>Job Position</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="employees" t-as="emp">
+                        <tr>
+                            <td t-out="emp['name']"/>
+                            <td t-out="emp['identification_id']"/>
+                            <td t-out="emp['non_hirable_reason']"/>
+                            <td t-out="emp['work_location']"/>
+                            <td t-out="emp['contract_start']"/>
+                            <td t-out="emp['contract_end']"/>
+                            <td t-out="emp['job']"/>
+                            <td t-out="emp['department']"/>
+                        </tr>
+                    </t>
+                </tbody>
+                <tfoot>
+                    <tr class="fw-bold">
+                        <td colspan="8" class="text-end">
+                            Subtotal: <span t-out="len(employees)"/> employee(s)
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </t>
+
+        <!-- Grand total -->
+        <div class="mt-4 p-2 bg-light border fw-bold text-end">
+            Total: <span t-out="total_count"/> non-hirable employee(s) across <span t-out="len(companies)"/> companies
+        </div>
+    </template>
+
+    <!-- PDF Template: clean, no interactive elements -->
+    <template id="report_non_hirable_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout" t-lang="env.user.lang">
+                <div class="page">
+                    <t t-call="hr_non_hirable.report_non_hirable_content"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- HTML Template: with search bar, export button, JS filtering -->
+    <template id="report_non_hirable_document_html">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout" t-lang="env.user.lang">
+                <div class="page">
+                    <div class="oe-no-print d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <div class="input-group input-group-sm">
+                                <input type="text" id="report_search_input" class="form-control" t-att-placeholder="search_placeholder"/>
+                                <button class="btn btn-outline-secondary" type="button" id="report_search_clear" title="Clear">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                            <span id="report_search_count" class="badge bg-info mt-1" style="display:none;"></span>
+                        </div>
+                        <a t-attf-href="/report/pdf/hr_non_hirable.report_non_hirable_document?context=%7B'active_test'%3A%20False%7D"
+                           class="btn btn-primary btn-sm" target="_blank">
+                            <i class="fa fa-file-pdf"/> Export PDF
+                        </a>
+                    </div>
+
+                    <t t-call="hr_non_hirable.report_non_hirable_content"/>
+
+                    <script>
+                        (function(){
+                            var input = document.getElementById('report_search_input');
+                            var clearBtn = document.getElementById('report_search_clear');
+                            var countEl = document.getElementById('report_search_count');
+
+                            function filterReport(){
+                                var q = input.value.toLowerCase().trim();
+                                var totalRows = 0, visibleRows = 0;
+
+                                document.querySelectorAll('table.table tbody tr').forEach(function(row){
+                                    totalRows++;
+                                    if (!q) {
+                                        row.style.display = '';
+                                        visibleRows++;
+                                        return;
+                                    }
+                                    var text = '';
+                                    row.querySelectorAll('td').forEach(function(td){
+                                        text += td.textContent.toLowerCase() + ' ';
+                                    });
+                                    var match = text.indexOf(q) !== -1;
+                                    row.style.display = match ? '' : 'none';
+                                    if (match) visibleRows++;
+                                });
+
+                                if (q) {
+                                    countEl.textContent = visibleRows + '/' + totalRows;
+                                    countEl.style.display = '';
+                                } else {
+                                    countEl.style.display = 'none';
+                                }
+                            }
+
+                            if (input) {
+                                input.addEventListener('input', filterReport);
+                                if (clearBtn) {
+                                    clearBtn.addEventListener('click', function(){
+                                        input.value = '';
+                                        filterReport();
+                                        input.focus();
+                                    });
+                                }
+                            }
+                        })();
+                    </script>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action: PDF -->
+    <record id="action_report_non_hirable_pdf" model="ir.actions.report">
+        <field name="name">Non-Hirable Employees PDF</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_non_hirable.report_non_hirable_document</field>
+        <field name="report_file">hr_non_hirable.report_non_hirable_document</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="paperformat_id" ref="hr_non_hirable.paperformat_report_landscape"/>
+    </record>
+
+    <!-- Report Action: HTML -->
+    <record id="action_report_non_hirable_html" model="ir.actions.report">
+        <field name="name">Non-Hirable Employees Report</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">hr_non_hirable.report_non_hirable_document_html</field>
+        <field name="report_file">hr_non_hirable.report_non_hirable_document_html</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+</odoo>

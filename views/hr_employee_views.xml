@@ -10,12 +10,7 @@
 
             <!-- Header button: only for archived non-hirable employees -->
             <xpath expr="//header" position="inside">
-                <button name="action_toggle_non_hirable"
-                        string="Remove from Blacklist"
-                        type="object"
-                        class="btn-danger"
-                        invisible="not is_non_hirable or active"
-                        groups="hr.group_hr_manager"/>
+                <button name="action_toggle_non_hirable" string="Remove from Blacklist" type="object" class="btn-danger" invisible="not is_non_hirable or active" groups="hr.group_hr_manager"/>
             </xpath>
 
             <!-- Notebook page: Blacklist Info -->
@@ -41,7 +36,7 @@
         </field>
     </record>
 
-    <!-- Employee Tree: non-hirable flag column -->
+    <!-- Employee Tree: non-hirable flag column + decoration -->
     <record id="hr_employee_view_tree_non_hirable" model="ir.ui.view">
         <field name="name">hr.employee.tree.non_hirable</field>
         <field name="model">hr.employee</field>
@@ -52,6 +47,22 @@
             </xpath>
             <xpath expr="//tree" position="inside">
                 <field name="is_non_hirable" column_invisible="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Dedicated Tree View for Non-Hirable Employees -->
+    <record id="hr_non_hirable_employee_view_tree" model="ir.ui.view">
+        <field name="name">hr.non.hirable.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="%(hr_non_hirable.action_report_non_hirable_pdf)d" string="Imprimir Reporte" type="action" class="btn-primary" display="always"/>
+                    <button name="%(hr_non_hirable.action_report_non_hirable_html)d" string="Ver Reporte" type="action" class="btn-secondary" display="always"/>
+                </header>
             </xpath>
         </field>
     </record>
