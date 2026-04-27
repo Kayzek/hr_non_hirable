@@ -33,7 +33,7 @@
 
             <table class="table table-sm table-bordered table-striped">
                 <thead class="table-light">
-                    <tr>
+                   <tr>
                         <th>Name</th>
                         <th>Identification ID</th>
                         <th>Non-Hirable Reason</th>
@@ -42,7 +42,7 @@
                         <th>Contract End</th>
                         <th>Job Position</th>
                         <th>Department</th>
-                    </tr>
+                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="employees" t-as="emp">
@@ -61,7 +61,8 @@
                 <tfoot>
                     <tr class="fw-bold">
                         <td colspan="8" class="text-end">
-                            Subtotal: <span t-out="len(employees)"/> employee(s)
+                            Subtotal: <span t-out="len(employees)"/>
+ employee(s)
                         </td>
                     </tr>
                 </tfoot>
@@ -70,45 +71,47 @@
 
         <!-- Grand total -->
         <div class="mt-4 p-2 bg-light border fw-bold text-end">
-            Total: <span t-out="total_count"/> non-hirable employee(s) across <span t-out="len(companies)"/> companies
+            Total: <span t-out="total_count"/>
+ non-hirable employee(s) across <span t-out="len(companies)"/>
+ companies
+    </div>
+</template>
+
+<!-- PDF Template: uses html_container directly, no basic_layout nesting -->
+<template id="report_non_hirable_document">
+    <t t-call="web.html_container">
+        <div class="article" t-att-data-oe-model="doc_model" t-att-data-oe-id="doc_ids and doc_ids[0] or False">
+            <div class="page">
+                <t t-call="hr_non_hirable.report_non_hirable_content"/>
+            </div>
         </div>
-    </template>
+    </t>
+</template>
 
-    <!-- PDF Template: clean, no interactive elements -->
-    <template id="report_non_hirable_document">
-        <t t-call="web.html_container">
-            <t t-call="web.basic_layout" t-lang="env.user.lang">
-                <div class="page">
-                    <t t-call="hr_non_hirable.report_non_hirable_content"/>
-                </div>
-            </t>
-        </t>
-    </template>
-
-    <!-- HTML Template: with search bar, export button, JS filtering -->
-    <template id="report_non_hirable_document_html">
-        <t t-call="web.html_container">
-            <t t-call="web.basic_layout" t-lang="env.user.lang">
-                <div class="page">
-                    <div class="oe-no-print d-flex justify-content-between align-items-center mb-2">
-                        <div>
-                            <div class="input-group input-group-sm">
-                                <input type="text" id="report_search_input" class="form-control" t-att-placeholder="search_placeholder"/>
-                                <button class="btn btn-outline-secondary" type="button" id="report_search_clear" title="Clear">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </div>
-                            <span id="report_search_count" class="badge bg-info mt-1" style="display:none;"></span>
+<!-- HTML Template: uses html_container directly, with search bar and JS filtering -->
+<template id="report_non_hirable_document_html">
+    <t t-call="web.html_container">
+        <div class="article" t-att-data-oe-model="doc_model" t-att-data-oe-id="doc_ids and doc_ids[0] or False">
+            <div class="page">
+                <div class="oe-no-print d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" id="report_search_input" class="form-control" t-att-placeholder="search_placeholder"/>
+                            <button class="btn btn-outline-secondary" type="button" id="report_search_clear" title="Clear">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
-                        <a t-attf-href="/report/pdf/hr_non_hirable.report_non_hirable_document?context=%7B'active_test'%3A%20False%7D"
-                           class="btn btn-primary btn-sm" target="_blank">
-                            <i class="fa fa-file-pdf"/> Export PDF
-                        </a>
+                        <span id="report_search_count" class="badge bg-info mt-1" style="display:none;"></span>
                     </div>
+                    <a t-attf-href="/report/pdf/hr_non_hirable.report_non_hirable_document?context=%7B'active_test'%3A%20False%7D" class="btn btn-primary btn-sm" target="_blank">
+                        <i class="fa fa-file-pdf"/>
+ Export PDF
+                    </a>
+                </div>
 
-                    <t t-call="hr_non_hirable.report_non_hirable_content"/>
+                <t t-call="hr_non_hirable.report_non_hirable_content"/>
 
-                    <script>
+                <script>
                         (function(){
                             var input = document.getElementById('report_search_input');
                             var clearBtn = document.getElementById('report_search_clear');
@@ -153,33 +156,56 @@
                                 }
                             }
                         })();
-                    </script>
-                </div>
-            </t>
-        </t>
-    </template>
+                </script>
+            </div>
+        </div>
+    </t>
+</template>
 
-    <!-- Report Action: PDF -->
-    <record id="action_report_non_hirable_pdf" model="ir.actions.report">
-        <field name="name">Non-Hirable Employees PDF</field>
-        <field name="model">hr.employee</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">hr_non_hirable.report_non_hirable_document</field>
-        <field name="report_file">hr_non_hirable.report_non_hirable_document</field>
-        <field name="binding_model_id" ref="hr.model_hr_employee"/>
-        <field name="binding_view_types">list,form</field>
-        <field name="paperformat_id" ref="hr_non_hirable.paperformat_report_landscape"/>
-    </record>
+<!-- Report Action: PDF (no binding - triggered via server action) -->
+<record id="action_report_non_hirable_pdf" model="ir.actions.report">
+    <field name="name">Non-Hirable Employees PDF</field>
+    <field name="model">hr.employee</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">hr_non_hirable.report_non_hirable_document</field>
+    <field name="report_file">hr_non_hirable.report_non_hirable_document</field>
+    <field name="paperformat_id" ref="hr_non_hirable.paperformat_report_landscape"/>
+</record>
 
-    <!-- Report Action: HTML -->
-    <record id="action_report_non_hirable_html" model="ir.actions.report">
-        <field name="name">Non-Hirable Employees Report</field>
-        <field name="model">hr.employee</field>
-        <field name="report_type">qweb-html</field>
-        <field name="report_name">hr_non_hirable.report_non_hirable_document_html</field>
-        <field name="report_file">hr_non_hirable.report_non_hirable_document_html</field>
-        <field name="binding_model_id" ref="hr.model_hr_employee"/>
-        <field name="binding_view_types">list,form</field>
-    </record>
+<!-- Report Action: HTML (no binding - triggered via server action) -->
+<record id="action_report_non_hirable_html" model="ir.actions.report">
+    <field name="name">Non-Hirable Employees Report</field>
+    <field name="model">hr.employee</field>
+    <field name="report_type">qweb-html</field>
+    <field name="report_name">hr_non_hirable.report_non_hirable_document_html</field>
+    <field name="report_file">hr_non_hirable.report_non_hirable_document_html</field>
+</record>
+
+<!--
+    Server Actions bound to hr.employee Print menu.
+    These ensure the report is always called with a single record ID,
+    preventing Odoo from rendering the global report once per selected record.
+-->
+<record id="action_server_print_non_hirable_pdf" model="ir.actions.server">
+    <field name="name">Non-Hirable Employees PDF</field>
+    <field name="model_id" ref="hr.model_hr_employee"/>
+    <field name="binding_model_id" ref="hr.model_hr_employee"/>
+    <field name="binding_view_types">list,form</field>
+    <field name="state">code</field>
+    <field name="code">
+action = env.ref('hr_non_hirable.action_report_non_hirable_pdf').report_action(records[:1])
+    </field>
+</record>
+
+<record id="action_server_print_non_hirable_html" model="ir.actions.server">
+    <field name="name">Non-Hirable Employees Report (HTML)</field>
+    <field name="model_id" ref="hr.model_hr_employee"/>
+    <field name="binding_model_id" ref="hr.model_hr_employee"/>
+    <field name="binding_view_types">list,form</field>
+    <field name="state">code</field>
+    <field name="code">
+action = env.ref('hr_non_hirable.action_report_non_hirable_html').report_action(records[:1])
+    </field>
+</record>
 
 </odoo>

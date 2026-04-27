@@ -8,7 +8,6 @@
     "depends": [
         "base",
         "hr",
-        "report",
         "hr_contract"
     ],
     "data": [
@@ -20,7 +19,7 @@
         "views/hr_departure_wizard_views.xml",
         "views/hr_non_hirable_menu.xml"
     ],
-    "installable": true,
-    "auto_install": false,
-    "application": false
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

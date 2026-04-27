@@ -39,9 +39,13 @@ class ReportNonHirable(models.AbstractModel):
                 "employees": emps_data,
             })
 
+        # Use a single doc to prevent Odoo from rendering the report
+        # once per selected record. This is a global report, not per-record.
+        single_doc = self.env["hr.employee"].browse(docids[:1]) if docids else self.env["hr.employee"]
         return {
-            "doc_ids": docids,
+            "doc_ids": docids[:1] if docids else [],
             "doc_model": "hr.employee",
+            "docs": single_doc,
             "datetime_now": datetime_now,
             "company_name": company_name,
             "companies": companies_data,
@@ -56,4 +60,3 @@ class ReportNonHirableHtml(models.AbstractModel):
 
     def _get_report_values(self, docids, data=None):
         return self.env["report.hr_non_hirable.report_non_hirable_document"]._get_report_values(docids, data)
-
